@@ -1,0 +1,30 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<style>
+    table, th, td
+    {
+    border: 1px solid black;
+    border-collapse:collapse;
+    text-align:center;
+    }
+</style>
+<body>
+<?php function renderChilds($childs) {
+    $content = '<table><tr valign="top">';
+    foreach ($childs as $child) {
+        $content .= '<td><table>';
+        $name = $child['data']['name'];
+        $content .= sprintf(
+            '<tr height="125"><td colspan="2" %s">%s <b>(norder:%d)</b></td></tr><tr><td>%d</td><td>%d</td></tr>',
+            ($name === 'NOT EXISTS' ? 'style="background-color: red;' : ''),
+            $name, $child['data']['norder'], $child['data']['left_index'], $child['data']['right_index']
+        );
+        $content .= '<tr><td colspan="2">' . renderChilds($child['childs']) . '</td></tr>';
+        $content .= '</table></td>';
+    }
+    $content .= '</tr></table>';
+    return $content;
+} ?>
+<?php echo renderChilds($data); ?>
+</body>
+</html>
